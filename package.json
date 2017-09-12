@@ -1,0 +1,30 @@
+{
+  "name": "fiesta-support",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "console.table": "^0.9.1",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.4",
+    "express-bearer-token": "^2.1.0",
+    "highland": "^2.11.1",
+    "lodash": "^4.17.4",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "rethinkdb": "^2.3.3"
+  },
+  "devDependencies": {
+    "supertest": "^3.0.0",
+    "tape": "^4.8.0"
+  }
+}
