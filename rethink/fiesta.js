@@ -52,6 +52,24 @@ module.exports = function(con){
       return result
     })
   }
+  methods.getJackpotByHash = function(hash){
+    assert(hash,'requires hash')
+    return r.table('jackpots').filter(function(row){
+      return row('provable')('hash').eq(hash)
+    }).coerceTo('array').run(con).then(function(result){
+      assert(result && result.length,'Jackpot not found with hash')
+      return result[0]
+    })
+  }
+  methods.getCoinflipByHash = function(hash){
+    assert(hash,'requires hash')
+    return r.table('coinflips').filter(function(row){
+      return row('provable')('hash').eq(hash)
+    }).coerceTo('array').run(con).then(function(result){
+      assert(result && result.length,'Coinflip not found with hash')
+      return result[0]
+    })
+  }
   methods.getJackpot = Promise.method(function(id){
     assert(id,'requires id')
     return r.table('jackpots').get(id).run(con).then(function(result){
@@ -109,13 +127,24 @@ module.exports = function(con){
 
   methods.getOrderByTradeID = Promise.method(function(id){
     assert(id,'requires id')
-    return r.table('orders').filter({trades:{[id]:{}}})
-      .coerceTo('array')
-      .run(con).then(function(result){
-        assert(result,'order not found')
-        assert(result.length,'order not found')
-        return result[0]
-      })
+    return r.table('orders').merge(function(row){
+      return {
+        tradeids: row('trades').map(function(row2){
+          return row2('id')
+        })
+      }
+    }).filter(r.row('tradeids').contains(id)).orderBy(r.desc('created')).coerceTo('array').run(con).then(function(result){
+      assert(result,'order not found')
+      assert(result.length,'order not found')
+      return result[0]
+    })
+    // return r.table('orders').filter({trades:{[id]:{}}})
+    //   .coerceTo('array')
+    //   .run(con).then(function(result){
+    //     assert(result,'order not found')
+    //     assert(result.length,'order not found')
+    //     return result[0]
+    //   })
   })
 
   methods.getUserBySteamID = Promise.method(function(id){

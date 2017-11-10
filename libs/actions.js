@@ -11,8 +11,14 @@ module.exports = function(libs){
       libs.fiesta.getJackpot(search).then(function(result){ 
         return { search:search, resultType:'Jackpot ID', result } 
       }),
+      libs.fiesta.getJackpotByHash(search).then(function(result){ 
+        return { search:search, resultType:'Jackpot Hash', result } 
+      }),
       libs.fiesta.getCoinflip(search).then(function(result){ 
         return { search:search, resultType:'Coinflip ID', result } 
+      }),
+      libs.fiesta.getCoinflipByHash(search).then(function(result){ 
+        return { search:search, resultType:'Coinflip Hash', result } 
       }),
       libs.fiesta.getUser(search).then(function(result){ 
         return { search:search, resultType:'User ID', result } 
@@ -104,9 +110,9 @@ module.exports = function(libs){
     })
   }
 
-  methods.getGameOrderByTrade = function(params){
+  methods.getOrderByTrade = function(params){
     assert(params.tradeid,'requires tradeid')
-    return libs.fiest.getOrderByTradeID(params.tradeid).then(function(result){
+    return libs.fiesta.getOrderByTradeID(params.tradeid).then(function(result){
       return {search:params.tradeid, resultType:'Order By Trade',result}
     })
   }
